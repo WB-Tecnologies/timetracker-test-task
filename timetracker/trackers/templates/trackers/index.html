@@ -1,0 +1,35 @@
+{% extends "trackers/base.html" %}
+{% load bootstrap3 %}
+{% block header %}
+  <div class='jumbotron'>
+    <h2>Track your activities.</h2>
+  </div>
+{% endblock header %}
+
+{% block content %}
+  <h2>
+      Your current activities:
+  </h2>
+<p>
+    {% for activity in activities %}
+        <li>
+           {{ activity.title }}
+           {{ activity.date_added|date:'M d, Y H:i'  }}
+           <p> type:{{ activity.type }}</p>
+           <p>time spent: {{ activity.total_duration }}</p>
+
+           <a href="{% url 'trackers:add_duration' activity.id %}">add duration</a>
+
+        </li>
+    {% empty %}
+      <li>No activities have been added yet.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'trackers:add_activity' %}">add new activity</a>
+
+<div class='jumbotron'>
+    <h2>See your statistic.</h2>
+  </div>
+
+
+{% endblock content %}
