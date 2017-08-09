@@ -15,18 +15,8 @@ class Activity(models.Model):
         total_duration_sum = self.activity_time_spend.all().aggregate(Sum('duration'))
         return total_duration_sum['duration__sum']
 
-    def time_spend_list(self):
-        return self.activity_time_spend.all()
-
-    @staticmethod
-    def work_activity():
-        work_activity_sum = Activity.oblects.filter(type='W').aggregate(Sum('duration'))
-        return work_activity_sum['duration__sum']
-
-    @staticmethod
-    def other_activity():
-        other_activity_sum = Activity.oblects.filter(type='O').aggregate(Sum('duration'))
-        return other_activity_sum['duration__sum']
+    # def time_spend_list(self):
+    #     return self.activity_time_spend.all()
 
     def __str__(self):
         return self.title
@@ -40,3 +30,15 @@ class TimeSpend(models.Model):
     )
     date = models.DateTimeField()
     duration = models.DurationField()
+
+    @staticmethod
+    def work_activity_time_sum():
+        time_sum = TimeSpend.objects.filter(activity__type='W')\
+            .aggregate(Sum('duration'))
+        return time_sum['duration__sum']
+
+    @staticmethod
+    def other_activity_time_sum():
+        time_sum = TimeSpend.objects.filter(activity__type='O') \
+            .aggregate(Sum('duration'))
+        return time_sum['duration__sum']

@@ -2,9 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from django.db.models import Sum
 
-from .models import Activity
+from .models import Activity, TimeSpend
 from .forms import ActivityForm, TimeSpendForm
 
 
@@ -13,11 +12,24 @@ def check_owner(request, activity):
         raise Http404
 
 
+def percentage(work, other):
+    result = work * 100 / (work + other)
+    return float("{0:.1f}".format(result))
+
+
 @login_required()
 def index(request):
     """homepage with activities"""
     activities = Activity.objects.filter(owner=request.user).order_by('date_added')
-    return render(request, 'trackers/index.html', {'activities': activities})
+    work_statistic = TimeSpend.work_activity_time_sum()
+    other_statistic = TimeSpend.other_activity_time_sum()
+    percentage_w_to_all = percentage(work_statistic, other_statistic)
+    return render(request, 'trackers/index.html', {
+        'activities': activities,
+        'work_statistic': work_statistic,
+        'other_statistic': other_statistic,
+        'percentage_w_to_all': percentage_w_to_all
+    })
 
 
 @login_required()
