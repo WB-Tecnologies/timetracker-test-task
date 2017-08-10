@@ -30,11 +30,13 @@ def index(request):
     work_statistic = TimeSpend.work_activity_time_sum()
     other_statistic = TimeSpend.other_activity_time_sum()
     percentage_w_to_all = percentage(work_statistic, other_statistic)
+    all_time = work_statistic + other_statistic
     return render(request, 'trackers/index.html', {
         'activities': activities,
         'work_statistic': work_statistic,
         'other_statistic': other_statistic,
-        'percentage_w_to_all': percentage_w_to_all
+        'percentage_w_to_all': percentage_w_to_all,
+        'all_time': all_time,
     })
 
 

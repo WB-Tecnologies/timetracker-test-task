@@ -16,7 +16,7 @@
            {{ activity.title }}
            {{ activity.date_added|date:'M d, Y H:i'  }}
            <p> type:{{ activity.type }}</p>
-           <p>time spent: {{ activity.total_duration }}</p>
+           <p>time spent: {{ activity.total_duration }} h.</p>
 
            <a href="{% url 'trackers:add_duration' activity.id %}">add duration</a>
 
@@ -30,8 +30,9 @@
 <div class='jumbotron'>
     <h2>See your statistic.</h2>
   </div>
-<h3>Time spent on work: {{ work_statistic }}</h3>
-<h3>Time spent on other activities:{{ other_statistic }}</h3>
+<h3>Time spent: {{ all_time }} h.</h3>
+<h3>Time spent on work: {{ work_statistic }} h.</h3>
+<h3>Time spent on other activities:{{ other_statistic }} h.</h3>
 <h3>Percentage of work to all time: {{ percentage_w_to_all }}%</h3>
 
 {% endblock content %}
