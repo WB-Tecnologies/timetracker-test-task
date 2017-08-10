@@ -13,8 +13,14 @@ def check_owner(request, activity):
 
 
 def percentage(work, other):
-    result = work * 100 / (work + other)
-    return float("{0:.1f}".format(result))
+    if work and other:
+        result = work * 100 / (work + other)
+        return float("{0:.1f}".format(result))
+    else:
+        if work:
+            return 100
+        else:
+            return 0
 
 
 @login_required()

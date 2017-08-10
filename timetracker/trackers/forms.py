@@ -11,8 +11,8 @@ class ActivityForm(forms.ModelForm):
 class TimeSpendForm(forms.ModelForm):
     class Meta:
         model = TimeSpend
-        fields = ['date', 'duration']
-        labels = {'duration': 'add duration in hours:'}
-        widgets = {'duration': forms.TimeInput(format='%H:%M'),
+        fields = ['date', 'time_spent']
+        labels = {'time_spent': 'add duration in hours:'}
+        widgets = {'time_spent': forms.NumberInput(),
                    'date': forms.SelectDateWidget(),
                    }

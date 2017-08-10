@@ -12,8 +12,8 @@ class Activity(models.Model):
     owner = models.ForeignKey(User)
 
     def total_duration(self):
-        total_duration_sum = self.activity_time_spend.all().aggregate(Sum('duration'))
-        return total_duration_sum['duration__sum']
+        total_duration_sum = self.activity_time_spend.all().aggregate(Sum('time_spent'))
+        return total_duration_sum['time_spent__sum']
 
     # def time_spend_list(self):
     #     return self.activity_time_spend.all()
@@ -29,16 +29,16 @@ class TimeSpend(models.Model):
         related_name='activity_time_spend'
     )
     date = models.DateTimeField()
-    duration = models.DurationField()
+    time_spent = models.PositiveIntegerField()
 
     @staticmethod
     def work_activity_time_sum():
         time_sum = TimeSpend.objects.filter(activity__type='W')\
-            .aggregate(Sum('duration'))
-        return time_sum['duration__sum']
+            .aggregate(Sum('time_spent'))
+        return time_sum['time_spent__sum']
 
     @staticmethod
     def other_activity_time_sum():
         time_sum = TimeSpend.objects.filter(activity__type='O') \
-            .aggregate(Sum('duration'))
-        return time_sum['duration__sum']
+            .aggregate(Sum('time_spent'))
+        return time_sum['time_spent__sum']
