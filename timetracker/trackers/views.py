@@ -12,6 +12,8 @@ def check_owner(request, activity):
         raise Http404
 
 
+#TODO ужастно не красиво, но просто и тупо
+# переделать как-нибудь по питонски
 def percentage(work, other):
     if work and other:
         result = work * 100 / (work + other)
@@ -30,7 +32,7 @@ def index(request):
     work_statistic = TimeSpend.work_activity_time_sum()
     other_statistic = TimeSpend.other_activity_time_sum()
     percentage_w_to_all = percentage(work_statistic, other_statistic)
-    all_time = work_statistic + other_statistic
+    all_time = all_activity_time(other_statistic, work_statistic)
     return render(request, 'trackers/index.html', {
         'activities': activities,
         'work_statistic': work_statistic,
@@ -39,6 +41,19 @@ def index(request):
         'all_time': all_time,
     })
 
+
+#TODO ужастно не красиво, но просто и тупо
+# переделать как-нибудь по питонски
+def all_activity_time(other_statistic, work_statistic):
+    if other_statistic and work_statistic:
+        all_time = work_statistic + other_statistic
+        return all_time
+    elif work_statistic:
+        return work_statistic
+    elif other_statistic:
+        return other_statistic
+    else:
+        return 0
 
 @login_required()
 def add_activity(request):

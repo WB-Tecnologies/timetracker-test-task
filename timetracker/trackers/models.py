@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.contrib import admin
 
 
 class Activity(models.Model):
@@ -23,6 +24,7 @@ class Activity(models.Model):
 
 
 class TimeSpend(models.Model):
+    """ time spnet on activities by dates"""
     activity = models.ForeignKey(
         Activity,
         on_delete=models.CASCADE,
@@ -42,3 +44,4 @@ class TimeSpend(models.Model):
         time_sum = TimeSpend.objects.filter(activity__type='O') \
             .aggregate(Sum('time_spent'))
         return time_sum['time_spent__sum']
+
