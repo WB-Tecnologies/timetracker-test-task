@@ -29,8 +29,8 @@ def percentage(work, other):
 def index(request):
     """homepage with activities"""
     activities = Activity.objects.filter(owner=request.user).order_by('date_added')
-    work_statistic = TimeSpend.work_activity_time_sum()
-    other_statistic = TimeSpend.other_activity_time_sum()
+    work_statistic = TimeSpend.work_activity_time_sum(request.user)
+    other_statistic = TimeSpend.other_activity_time_sum(request.user)
     percentage_w_to_all = percentage(work_statistic, other_statistic)
     all_time = all_activity_time(other_statistic, work_statistic)
     return render(request, 'trackers/index.html', {

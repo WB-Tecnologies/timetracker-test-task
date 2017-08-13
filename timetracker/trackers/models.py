@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
-from django.contrib import admin
 
 
 class Activity(models.Model):
@@ -34,14 +33,14 @@ class TimeSpend(models.Model):
     time_spent = models.PositiveIntegerField()
 
     @staticmethod
-    def work_activity_time_sum():
-        time_sum = TimeSpend.objects.filter(activity__type='W')\
-            .aggregate(Sum('time_spent'))
+    def work_activity_time_sum(user):
+        time_sum = TimeSpend.objects.filter(activity__owner=user).\
+            filter(activity__type='W').aggregate(Sum('time_spent'))
         return time_sum['time_spent__sum']
 
     @staticmethod
-    def other_activity_time_sum():
-        time_sum = TimeSpend.objects.filter(activity__type='O') \
-            .aggregate(Sum('time_spent'))
+    def other_activity_time_sum(user):
+        time_sum = TimeSpend.objects.filter(activity__owner=user).\
+        filter(activity__type='O').aggregate(Sum('time_spent'))
         return time_sum['time_spent__sum']
 
