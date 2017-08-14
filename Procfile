@@ -1,1 +1,1 @@
-web: gunicorn timetracker.wsgi --log-file -
+web: gunicorn timetracker.timetracker.wsgi --log-file -
