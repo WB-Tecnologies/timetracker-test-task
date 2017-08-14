@@ -11,9 +11,11 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = \
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 # Quick-start development settings - unsuitable for production
@@ -23,9 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '9s7=)--y06@2nqkwqc!g%4(qcp@rf2v2)*sy_2fw%&x88+hq4k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -80,14 +82,7 @@ WSGI_APPLICATION = 'timetracker.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'timetrackerdb',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '', # Set to empty string for localhost.
-        'PORT': '', # Set to empty string for default.
-    }
+    'default': dj_database_url.config(default='postgres://localhost')
 }
 
 
@@ -128,3 +123,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Настройки для django-bootstrap3
+BOOTSTRAP3 = {
+    'include_jquery': True,
+}
+
+# Поддержка заголовка 'X-Forwarded-Proto' для request.is_secure().
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+STATIC_ROOT = 'staticfiles'
+
+STATICFILES_DIRS = (
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static'),
+)
