@@ -12,7 +12,7 @@ pip install virtualenv
 
     # Install Python requirements
 sudo -u vagrant virtualenv --python=python3 /home/vagrant/.virtualenvs/tt_env
-sudo -u vagrant PYTHONUNBUFFERED=1 sh -c ". /home/vagrant/.virtualenvs/tt_env/bin/activate && pip install -r /timetracker/requirements.txt"
+sudo -u vagrant PYTHONUNBUFFERED=1 sh -c ". /home/vagrant/.virtualenvs/tt_env/bin/activate && pip install -r /timetracker/timetracker/requirements.txt"
 
     # Install postgres and create db
 sudo apt-get install -y postgrespro-9.6 postgrespro-contrib-9.6 postgrespro-plperl-9.6 postgrespro-plpython-9.6 postgrespro-plpython3-9.6 postgrespro-pltcl-9.6
