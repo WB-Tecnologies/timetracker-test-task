@@ -41,6 +41,6 @@ class TimeSpend(models.Model):
     @staticmethod
     def other_activity_time_sum(user):
         time_sum = TimeSpend.objects.filter(activity__owner=user).\
-        filter(activity__type='O').aggregate(Sum('time_spent'))
+            filter(activity__type='O').aggregate(Sum('time_spent'))
         return time_sum['time_spent__sum']
 
