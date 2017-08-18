@@ -19,6 +19,8 @@ class ActivityAdmin(admin.ModelAdmin):
     list_filter = ('type', )
     inlines = [TimeSpendInLine]
 
+    class Meta:
+        verbose_name_plural = "Activities"
 
 admin.site.register(Activity, ActivityAdmin)
 admin.site.register(TimeSpend, TimeSpendAdmin)

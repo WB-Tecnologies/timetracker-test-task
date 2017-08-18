@@ -25,7 +25,7 @@ BASE_DIR = \
 SECRET_KEY = '9s7=)--y06@2nqkwqc!g%4(qcp@rf2v2)*sy_2fw%&x88+hq4k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -80,6 +80,7 @@ WSGI_APPLICATION = 'timetracker.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+
 
 DATABASES = {
     'default': dj_database_url.config(default='postgres://localhost')

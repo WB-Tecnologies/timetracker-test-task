@@ -11,6 +11,9 @@ class Activity(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User)
 
+    class Meta:
+        verbose_name_plural = "Activities"
+
     def total_duration(self):
         total_duration_sum = self.activity_time_spend.all().aggregate(Sum('time_spent'))
         return total_duration_sum['time_spent__sum']

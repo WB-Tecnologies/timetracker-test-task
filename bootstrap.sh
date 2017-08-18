@@ -24,7 +24,10 @@ su - vagrant -c "createdb timetrackerdb"
 export WORKON_HOME=/home/vagrant/.virtualenvs
 mkdir -p /home/vagrant/.virtualenvs
 source /home/vagrant/.virtualenvs/tt_env/bin/activate
- # Run run run
+ # Run
 python /timetracker/timetracker/manage.py migrate
+echo "from django.contrib.auth import get_user_model
+User = get_user_model()
+User.objects.create_superuser('admin', '', 'admin123')" | python /timetracker/timetracker/manage.py shell
 python /timetracker/timetracker/manage.py runserver 0.0.0.0:8000
 INIT
