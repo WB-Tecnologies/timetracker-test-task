@@ -2,9 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import FormView
 
 from .models import Activity, TimeSpend
 from .forms import ActivityForm, TimeSpendForm
+
+time = TimeSpend()
 
 
 def check_owner(request, activity):
@@ -12,25 +15,15 @@ def check_owner(request, activity):
         raise Http404
 
 
-def percentage(work, other):
-    if work and other:
-        result = work * 100 / (work + other)
-        return float("{0:.1f}".format(result))
-    else:
-        if work:
-            return 100
-        else:
-            return 0
-
-
 @login_required()
 def index(request):
     """homepage with activities"""
     activities = Activity.objects.filter(owner=request.user).order_by('date_added')
-    work_statistic = TimeSpend.work_activity_time_sum(request.user)
-    other_statistic = TimeSpend.other_activity_time_sum(request.user)
-    percentage_w_to_all = percentage(work_statistic, other_statistic)
-    all_time = all_activity_time(other_statistic, work_statistic)
+    user = request.user
+    work_statistic = time.work_activity_time_sum(user)
+    other_statistic = time.other_activity_time_sum(user)
+    percentage_w_to_all = time.percentage(user)
+    all_time = time.all_activity_time(user)
     return render(request, 'trackers/index.html', {
         'activities': activities,
         'work_statistic': work_statistic,
@@ -40,46 +33,27 @@ def index(request):
     })
 
 
-def all_activity_time(other_statistic, work_statistic):
-    if other_statistic and work_statistic:
-        all_time = work_statistic + other_statistic
-        return all_time
-    elif work_statistic:
-        return work_statistic
-    elif other_statistic:
-        return other_statistic
-    else:
-        return 0
+class ActivityCreate(FormView):
+    template_name = 'trackers/add_activity.html'
+    form_class = ActivityForm
+
+    def form_valid(self, form):
+        form.set_owner(self.request)
+        form.save()
+        return HttpResponseRedirect(reverse('trackers:index'))
 
 
 @login_required()
-def add_activity(request):
-    if request.method != 'POST':
-        form = ActivityForm()
-    else:
-        form = ActivityForm(request.POST)
-        if form.is_valid():
-            new_activity = form.save(commit=False)
-            new_activity.owner = request.user
-            new_activity.save()
-            return HttpResponseRedirect(reverse('trackers:index'))
-
-    context = {'form': form}
-    return render(request, 'trackers/add_activity.html', context)
-
-
 def add_duration(request, activity_id):
     activity = get_object_or_404(Activity, id=activity_id)
     check_owner(request, activity)
-    if request.method != 'POST':
-        form = TimeSpendForm()
-    else:
+    if request.method == 'POST':
         form = TimeSpendForm(request.POST)
         if form.is_valid():
-            new_time_spend = form.save(commit=False)
-            new_time_spend.activity = activity
-            new_time_spend.save()
+            form.set_activity(activity)
+            form.save()
             return HttpResponseRedirect(reverse('trackers:index'))
+    else:
+        form = TimeSpendForm()
 
-    return render(request, 'trackers/add_duration.html', {'activity': activity,
-                                                          'form': form})
+    return render(request, 'trackers/add_duration.html', {'activity': activity, 'form': form})

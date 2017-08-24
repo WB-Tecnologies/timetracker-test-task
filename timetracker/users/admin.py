@@ -8,7 +8,7 @@ class ActivityInLine(admin.TabularInline):
     model = Activity
     show_change_link = True
     extra = 1
-    readonly_fields = ('title', 'type', )
+    readonly_fields = ('title', 'TYPE_CHOICES', )
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -18,4 +18,3 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
-

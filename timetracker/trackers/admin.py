@@ -15,8 +15,8 @@ class TimeSpendInLine(admin.TabularInline):
 
 class ActivityAdmin(admin.ModelAdmin):
     search_fields = ['title']
-    list_display = ['title', 'date_added', 'type', 'owner']
-    list_filter = ('type', )
+    list_display = ['title', 'date_added', 'TYPE_CHOICES', 'owner']
+    list_filter = ('TYPE_CHOICES', )
     inlines = [TimeSpendInLine]
 
     class Meta:

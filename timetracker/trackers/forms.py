@@ -5,7 +5,11 @@ from .models import Activity, TimeSpend
 class ActivityForm(forms.ModelForm):
     class Meta:
         model = Activity
-        fields = ['title', 'type', ]
+        fields = ['title', "TYPE_CHOICES", ]
+
+    def set_owner(self, request):
+        new_activity = self.save(commit=False)
+        new_activity.owner = request.user
 
 
 class TimeSpendForm(forms.ModelForm):
@@ -16,3 +20,7 @@ class TimeSpendForm(forms.ModelForm):
         widgets = {'time_spent': forms.NumberInput(),
                    'date': forms.SelectDateWidget(),
                    }
+
+    def set_activity(self, activity):
+        new_time_spend = self.save(commit=False)
+        new_time_spend.activity = activity

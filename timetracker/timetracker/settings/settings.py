@@ -137,3 +137,8 @@ STATIC_ROOT = 'staticfiles'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+try:
+    from timetracker.settings.settings_local import *
+except ImportError:
+    pass
