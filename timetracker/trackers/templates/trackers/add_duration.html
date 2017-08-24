@@ -1,0 +1,16 @@
+{% extends "trackers/base.html" %}
+{% load bootstrap3 %}
+{% load l10n %}
+{% block content %}
+{% localize on %}
+<h3>{{ activity.title}}</h3>
+<form action="{% url 'trackers:add_duration' activity.id %}"
+      method="post" class="form">
+     {% csrf_token %}
+      {% bootstrap_form form %}
+      {% buttons %}
+      <button name="submit" class="btn btn-primary">add</button>
+      {% endbuttons %}
+</form>
+{% endlocalize %}
+{% endblock content %}
